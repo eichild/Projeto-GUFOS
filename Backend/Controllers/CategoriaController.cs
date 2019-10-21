@@ -79,17 +79,17 @@ namespace Backend.Controllers {
         }
 
         //DELETE API/CATEGORIA
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Categoria>> Delete(int id){
-            var categoria = await _contexto.Categoria.FindAsync(id);
+        [HttpDelete ("{id}")]
+        public async Task<ActionResult<Categoria>> Delete (int id) {
+            var categoria = await _contexto.Categoria.FindAsync (id);
 
-            if(categoria==null){
-                return NotFound();
+            if (categoria == null) {
+                return NotFound ();
             }
-            
+
             //Removendo objeto e salva as mudanças
-            _contexto.Categoria.Remove(categoria);
-            await _contexto.SaveChangesAsync();
+            _contexto.Categoria.Remove (categoria);
+            await _contexto.SaveChangesAsync ();
 
             return categoria;
         }
