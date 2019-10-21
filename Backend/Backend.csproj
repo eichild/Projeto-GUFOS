@@ -14,6 +14,12 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <!--Definimos a criação dos comentários atrelados aos métodos sem isso aqui não funciona-->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarm>$(NoWarm);1591</NoWarm>
+  </PropertyGroup>
 </Project>

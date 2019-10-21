@@ -13,7 +13,7 @@ namespace Backend.Models
         public int PresencaId { get; set; }
         [Required]
         [Column("STATUS_PRESENCA")]
-        public bool? StatusPresenca { get; set; }
+        public String StatusPresenca { get; set; }
         [Column("USUARIO_ID")]
         public int? UsuarioId { get; set; }
         [Column("EVENTO_ID")]

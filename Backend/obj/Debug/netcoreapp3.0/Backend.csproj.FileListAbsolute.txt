@@ -39,3 +39,12 @@ C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Microsoft.A
 C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
 C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Newtonsoft.Json.Bson.dll
+C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Backend.xml
+C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Microsoft.OpenApi.dll
+C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\fic\Documents\Projeto-GUFOS\Backend\bin\Debug\netcoreapp3.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\fic\Documents\Projeto-GUFOS\Backend\obj\Debug\netcoreapp3.0\Backend.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\fic\Documents\Projeto-GUFOS\Backend\obj\Debug\netcoreapp3.0\Backend.xml
