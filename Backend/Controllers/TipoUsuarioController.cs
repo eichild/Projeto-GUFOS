@@ -23,6 +23,7 @@ namespace Backend.Controllers {
             }
             return tipoUsuarios;
         }
+
         [HttpGet ("{id}")]
         public async Task<ActionResult<TipoUsuario>> Get (int id) {
             var usuario = await _contexto.TipoUsuario.FindAsync (id);
@@ -33,4 +34,4 @@ namespace Backend.Controllers {
             return usuario;
         }
     }
-}   
+}

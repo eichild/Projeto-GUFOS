@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers {
-    
+
     [Route ("api/[controller]")]
     [ApiController]
     public class LocalizacaoController : ControllerBase {
@@ -20,6 +20,7 @@ namespace Backend.Controllers {
             }
             return localizacoes;
         }
+
         [HttpGet ("{id}")]
         public async Task<ActionResult<Localizacao>> Get (int id) {
             var localizacao = await _contexto.Localizacao.FindAsync (id);

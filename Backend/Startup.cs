@@ -47,60 +47,62 @@ using Newtonsoft.Json;
 //Adicionamos o pacote JWT
 //dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 3.0.0
 
-    public class Startup {
-        public Startup (IConfiguration configuration) {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices (IServiceCollection services) {
-            //Configuramos como os objetos relacionados aparecerão nos retornos
-            services.AddControllersWithViews ().AddNewtonsoftJson (opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-            services.AddSwaggerGen (c => {
-                c.SwaggerDoc ("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-
-                //Definimos o caminho e arquivo temporário de documentação
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine (AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments (xmlPath);
-            });
-
-            //Configuramos o JWT
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>{
-                options.TokenValidationParameters = new TokenValidationParameters{
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = Configuration["Jwt:Issuer"],
-                    ValidAudience = Configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                };
-            });
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
-            if (env.IsDevelopment ()) {
-                app.UseDeveloperExceptionPage ();
-            }
-            //Usamos efetivamente o Swagger
-            app.UseSwagger ();
-            //Especificamos o EndPoint
-            app.UseSwaggerUI (c => {
-                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "API V1");
-            });
-
-            app.UseHttpsRedirection ();
-
-            app.UseRouting ();
-
-            app.UseAuthorization ();
-
-            app.UseEndpoints (endpoints => {
-                endpoints.MapControllers ();
-            });
-        }
+public class Startup {
+    public Startup (IConfiguration configuration) {
+        Configuration = configuration;
     }
+
+    public IConfiguration Configuration { get; }
+
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public void ConfigureServices (IServiceCollection services) {
+        //Configuramos como os objetos relacionados aparecerão nos retornos
+        services.AddControllersWithViews ().AddNewtonsoftJson (opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+        services.AddSwaggerGen (c => {
+            c.SwaggerDoc ("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+
+            //Definimos o caminho e arquivo temporário de documentação
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine (AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments (xmlPath);
+        });
+
+        //Configuramos o JWT
+        services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme).AddJwtBearer (options => {
+            options.TokenValidationParameters = new TokenValidationParameters {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = Configuration["Jwt:Issuer"],
+            ValidAudience = Configuration["Jwt:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (Configuration["Jwt:Key"]))
+            };
+        });
+    }
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
+        if (env.IsDevelopment ()) {
+            app.UseDeveloperExceptionPage ();
+        }
+        //Usando a autenticação
+        app.UseAuthentication ();
+
+        //Usamos efetivamente o Swagger
+        app.UseSwagger ();
+        //Especificamos o EndPoint
+        app.UseSwaggerUI (c => {
+            c.SwaggerEndpoint ("/swagger/v1/swagger.json", "API V1");
+        });
+
+        app.UseHttpsRedirection ();
+
+        app.UseRouting ();
+
+        app.UseAuthorization ();
+
+        app.UseEndpoints (endpoints => {
+            endpoints.MapControllers ();
+        });
+    }
+}

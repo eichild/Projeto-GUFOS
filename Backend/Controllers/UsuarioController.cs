@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 //PARA ADICIONAR A ÁRVORE DE OBJETOS ADICIONAMOS UMA NOVA BIBLIOTECA JSON
 //dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson
 namespace Backend.Controllers {
@@ -11,6 +13,7 @@ namespace Backend.Controllers {
     //DEFININDO ROTA do controller e dizendo que é um controller para api
     [Route ("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsuarioController : ControllerBase {
         //INSTANCIANDO OBJETO
         BDGUFOSContext _contexto = new BDGUFOSContext ();
@@ -31,7 +34,7 @@ namespace Backend.Controllers {
         //SELECT * FROM CATEGORIA WHERE ID=2
         [HttpGet ("{id}")]
         public async Task<ActionResult<Usuario>> Get (int id) {
-            var usuario = await _contexto.Usuario.FindAsync(id);
+            var usuario = await _contexto.Usuario.FindAsync (id);
 
             if (usuario == null) {
                 return NotFound ();
