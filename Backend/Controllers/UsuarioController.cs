@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Backend.Models;
+using Backend.Domains;
+using Backend.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,14 +17,14 @@ namespace Backend.Controllers {
     [Authorize]
     public class UsuarioController : ControllerBase {
         //INSTANCIANDO OBJETO
-        BDGUFOSContext _contexto = new BDGUFOSContext ();
+        UsuarioRepository _repositorio = new UsuarioRepository();
 
         //METODO PARA LISTAR TODOS OS DADOS DA LISTA DE CATEGORIA PARA PEGAR DO MODEL SELECT*FROM CATEGORIA
         //GET: api/Usuario
         [HttpGet]
         public async Task<ActionResult<List<Usuario>>> Get () {
             //Adiciona como se fosse join
-            var usuarios = await _contexto.Usuario.Include ("TipoUsuario").ToListAsync ();
+            var usuarios = await _repositorio.Listar ();
 
             if (usuarios == null) {
                 return NotFound ();
@@ -34,7 +35,7 @@ namespace Backend.Controllers {
         //SELECT * FROM CATEGORIA WHERE ID=2
         [HttpGet ("{id}")]
         public async Task<ActionResult<Usuario>> Get (int id) {
-            var usuario = await _contexto.Usuario.FindAsync (id);
+            var usuario = await _repositorio.BuscarPorID(id);
 
             if (usuario == null) {
                 return NotFound ();
@@ -42,5 +43,68 @@ namespace Backend.Controllers {
             return usuario;
         }
         //fim get
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<Usuario>> Post(Usuario usuario)
+        {
+            try
+            {
+                await _repositorio.Salvar(usuario);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return usuario;
+        }        
+
+
+        // PUT: api/Usuario/5
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Put(int id, Usuario usuario)
+        {
+            if (id != usuario.UsuarioId)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                await _repositorio.Alterar(usuario);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                var usuario_valido = await _repositorio.BuscarPorID(id);
+
+                if (usuario_valido == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/Usuario/5
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<ActionResult<Usuario>> Delete(int id)
+        {
+            var usuario = await _repositorio.BuscarPorID(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            await _repositorio.Excluir(usuario);
+
+            return usuario;
+        }
     }
 }

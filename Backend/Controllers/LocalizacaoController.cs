@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Backend.Models;
+using Backend.Domains;
+using Backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,11 +10,11 @@ namespace Backend.Controllers {
     [Route ("api/[controller]")]
     [ApiController]
     public class LocalizacaoController : ControllerBase {
-        BDGUFOSContext _contexto = new BDGUFOSContext ();
 
+        LocalizacaoRepository _repositorio = new LocalizacaoRepository ();
         [HttpGet]
         public async Task<ActionResult<List<Localizacao>>> Get () {
-            var localizacoes = await _contexto.Localizacao.ToListAsync ();
+            var localizacoes = await _repositorio.Listar ();
 
             if (localizacoes == null) {
                 return NotFound ();
@@ -23,7 +24,7 @@ namespace Backend.Controllers {
 
         [HttpGet ("{id}")]
         public async Task<ActionResult<Localizacao>> Get (int id) {
-            var localizacao = await _contexto.Localizacao.FindAsync (id);
+            var localizacao = await _repositorio.BuscarPorID (id);
 
             if (localizacao == null) {
                 return NotFound ();
@@ -34,8 +35,7 @@ namespace Backend.Controllers {
         [HttpPost]
         public async Task<ActionResult<Localizacao>> Post (Localizacao localizacao) {
             try {
-                await _contexto.AddAsync (localizacao);
-                await _contexto.SaveChangesAsync ();
+                await _repositorio.Salvar (localizacao);
             } catch (DbUpdateConcurrencyException) {
                 throw;
             }
@@ -47,12 +47,11 @@ namespace Backend.Controllers {
             if (id != localizacao.LocalizacaoId) {
                 return BadRequest ();
             }
-            _contexto.Entry (localizacao).State = EntityState.Modified;
 
             try {
-                await _contexto.SaveChangesAsync ();
+                await _repositorio.Alterar (localizacao);
             } catch (DbUpdateConcurrencyException) {
-                var localizacao_valido = await _contexto.Localizacao.FindAsync (id);
+                var localizacao_valido = await _repositorio.BuscarPorID (id);
 
                 if (localizacao_valido == null) {
                     return NotFound ();
@@ -65,13 +64,12 @@ namespace Backend.Controllers {
 
         [HttpDelete ("{id}")]
         public async Task<ActionResult<Localizacao>> Delete (int id) {
-            var localizacao = await _contexto.Localizacao.FindAsync (id);
+            var localizacao = await _repositorio.BuscarPorID (id);
 
             if (localizacao == null) {
                 return NotFound ();
             }
-            _contexto.Localizacao.Remove (localizacao);
-            await _contexto.SaveChangesAsync ();
+            await _repositorio.Excluir (localizacao);
 
             return localizacao;
         }

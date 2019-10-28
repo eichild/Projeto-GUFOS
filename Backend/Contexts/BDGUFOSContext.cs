@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Backend.Models
+namespace Backend.Domains
 {
     public partial class BDGUFOSContext : DbContext
     {
@@ -26,10 +26,9 @@ namespace Backend.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-444V57F\\SQLEXPRESS; Database=BDGUFOS; User Id= sa; Password=132");
+                optionsBuilder.UseSqlServer("Server= DESKTOP-444V57F\\SQLEXPRESS; Database=BDGUFOS; User Id= sa; Password=132");
             }
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Categoria>(entity =>
@@ -71,17 +70,17 @@ namespace Backend.Models
 
             modelBuilder.Entity<Presenca>(entity =>
             {
-                entity.Property(e => e.StatusPresenca).HasDefaultValueSql("((1))");
+                entity.Property(e => e.StatusPresenca).IsUnicode(false);
 
                 entity.HasOne(d => d.Evento)
                     .WithMany(p => p.Presenca)
                     .HasForeignKey(d => d.EventoId)
-                    .HasConstraintName("FK__PRESENCA__EVENTO__47DBAE45");
+                    .HasConstraintName("FK__PRESENCA__EVENTO__571DF1D5");
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.Presenca)
                     .HasForeignKey(d => d.UsuarioId)
-                    .HasConstraintName("FK__PRESENCA__USUARI__46E78A0C");
+                    .HasConstraintName("FK__PRESENCA__USUARI__5629CD9C");
             });
 
             modelBuilder.Entity<TipoUsuario>(entity =>

@@ -34,10 +34,13 @@ using Newtonsoft.Json;
 //dotnet ef
 
 //Codigo que criara o nosso Contexto da base de dados e nossos models(conexão da nossa aplicação com o banco)
-//dotnet ef dbcontext scaffold "Server= DESKTOP-444V57F\SQLEXPRESS; Database=Gufos; User Id= sa; Password=132" Microsoft.EntityFrameworkCore.SqlServer -o Models -d
+//dotnet ef dbcontext scaffold "Server= DESKTOP-444V57F\\SQLEXPRESS; Database=Gufos; User Id= sa; Password=132" Microsoft.EntityFrameworkCore.SqlServer -o Models -d
 //STRING DE CONEXÃO
 //contexto do banco de dados
 //-o cria diretorio do models/ -d data anotation(inclui no models as anotações do banco no model)
+
+////dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson
+
 
 //DOCUMENTAÇÃO SWAGGER
 //Instalamos o pacote
@@ -46,7 +49,6 @@ using Newtonsoft.Json;
 //JWT - JSON WEB TOKEN
 //Adicionamos o pacote JWT
 //dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 3.0.0
-
 public class Startup {
     public Startup (IConfiguration configuration) {
         Configuration = configuration;

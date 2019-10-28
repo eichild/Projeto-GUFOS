@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Backend.Models;
+using Backend.Domains;
+using Backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,41 +12,36 @@ namespace Backend.Controllers {
     [Route ("api/[controller]")]
     [ApiController]
     public class CategoriaController : ControllerBase {
-        //INSTANCIANDO OBJETO
-        BDGUFOSContext _contexto = new BDGUFOSContext ();
 
-        //METODO PARA LISTAR TODOS OS DADOS DA LISTA DE CATEGORIA PARA PEGAR DO MODEL SELECT*FROM CATEGORIA
-        //GET: api/Categoria
+        //INSTANCIANDO REPOSITORIO
+        CategoriaRepository _repositorio = new CategoriaRepository ();
+
         [HttpGet]
         public async Task<ActionResult<List<Categoria>>> Get () {
-            var categorias = await _contexto.Categoria.ToListAsync ();
+            var categorias = await _repositorio.Listar ();
 
             if (categorias == null) {
                 return NotFound ();
             }
             return categorias;
         }
-        //api categoria 2 metodo para buscar uma categoria só
-        //SELECT * FROM CATEGORIA WHERE ID=2
+
         [HttpGet ("{id}")]
         public async Task<ActionResult<Categoria>> Get (int id) {
-            var categoria = await _contexto.Categoria.FindAsync (id);
+            var categoria = await _repositorio.BuscarPorID (id);
 
             if (categoria == null) {
                 return NotFound ();
             }
             return categoria;
         }
-        //fim get
+
 
         //POST INSERT API/CATEGORIA
         [HttpPost]
         public async Task<ActionResult<Categoria>> Post (Categoria categoria) {
             try {
-                //Tratamos contra ataques de SQL INJECTION
-                await _contexto.AddAsync (categoria);
-                //Salvando objeto no banco de dados
-                await _contexto.SaveChangesAsync ();
+                await _repositorio.Salvar (categoria);
             } catch (DbUpdateConcurrencyException) {
                 //Mostra erro
                 throw;
@@ -59,14 +55,11 @@ namespace Backend.Controllers {
             if (id != categoria.CategoriaId) {
                 return BadRequest ();
             }
-            //Comparamos os atributos que foram modificados atraves do EF
-            //COMO SE FOSSE UM UPDATE
-            _contexto.Entry (categoria).State = EntityState.Modified;
-
             try {
-                await _contexto.SaveChangesAsync ();
+                await _repositorio.Alterar (categoria);
+
             } catch (DbUpdateConcurrencyException) {
-                var categoria_valido = await _contexto.Categoria.FindAsync (id);
+                var categoria_valido = await _repositorio.BuscarPorID (id);
 
                 if (categoria_valido == null) {
                     return NotFound ();
@@ -81,15 +74,12 @@ namespace Backend.Controllers {
         //DELETE API/CATEGORIA
         [HttpDelete ("{id}")]
         public async Task<ActionResult<Categoria>> Delete (int id) {
-            var categoria = await _contexto.Categoria.FindAsync (id);
+            var categoria = await _repositorio.BuscarPorID (id);
 
             if (categoria == null) {
                 return NotFound ();
             }
-
-            //Removendo objeto e salva as mudanças
-            _contexto.Categoria.Remove (categoria);
-            await _contexto.SaveChangesAsync ();
+            await _repositorio.Excluir(categoria);
 
             return categoria;
         }

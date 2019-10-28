@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Backend.Models
+namespace Backend.Domains
 {
     [Table("PRESENCA")]
     public partial class Presenca
@@ -13,7 +13,8 @@ namespace Backend.Models
         public int PresencaId { get; set; }
         [Required]
         [Column("STATUS_PRESENCA")]
-        public String StatusPresenca { get; set; }
+        [StringLength(255)]
+        public string StatusPresenca { get; set; }
         [Column("USUARIO_ID")]
         public int? UsuarioId { get; set; }
         [Column("EVENTO_ID")]

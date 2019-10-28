@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Backend.Models
+namespace Backend.Domains
 {
     [Table("LOCALIZACAO")]
     public partial class Localizacao

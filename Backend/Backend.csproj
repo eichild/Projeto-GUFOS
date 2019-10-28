@@ -20,7 +20,7 @@
 
   <PropertyGroup>
     <!--Definimos a criação dos comentários atrelados aos métodos sem isso aqui não funciona-->
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <NoWarm>$(NoWarm);1591</NoWarm>
   </PropertyGroup>
 </Project>

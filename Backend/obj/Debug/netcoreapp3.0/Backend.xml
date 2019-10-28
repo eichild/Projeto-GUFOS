@@ -4,11 +4,5 @@
         <name>Backend</name>
     </assembly>
     <members>
-        <member name="M:Backend.Controllers.TipoUsuarioController.Get">
-            <summary>
-            Metodo para listar os tipos de usuario
-            </summary>
-            <returns>Tipo de usuario</returns>
-        </member>
     </members>
 </doc>
